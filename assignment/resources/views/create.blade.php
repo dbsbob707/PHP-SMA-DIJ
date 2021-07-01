@@ -14,11 +14,19 @@
                     </div>
                 @endisset
 
+                
+                
+
                 <form action="{{ route('store') }}" method="post">
                     @csrf
                     <div class="mb-2">
                         <select name="colleague_email" class="form-control mb-2">
-                            <option value="">Selecteer een collega</option>
+                            @if (count($colleague_emails))
+                    @foreach ($colleague_emails as $colleague_email)
+                        <p> {{$colleague_email['name']}}</p>
+                        <option value="{{ $colleague_email['email'] }}">{{ $colleague_email['name'] }}</option>
+                    @endforeach
+                @endif
                         </select>
                         @error('colleague_email')
                             <div class="text-danger mt-2 text-sm">

@@ -28,6 +28,8 @@ class MessageController extends Controller
     public function create(): Renderable
     {
         $colleague_emails = Http::get('https://pastebin.com/raw/uDzdKzGG')->json();
+        
+        // dd($colleague_emails[1]['name']);
         return view('create', [
             'colleague_emails' => $colleague_emails
         ]);
@@ -64,8 +66,11 @@ class MessageController extends Controller
             'expires_at' => Carbon::now()->addHours(60),
         ]);
 
+        $colleague_emails = Http::get('https://pastebin.com/raw/uDzdKzGG')->json();
+        
         // redirect
         return view('create', [
+            'colleague_emails' => $colleague_emails,
             'key' => $key,
             'password' => $password,
         ]);
