@@ -22,6 +22,8 @@ class PageController extends Controller
 
     public function index(Request $request, $page_id)
     {
+        $status = null;
+
         $value = $request->session()->pull('signin');
 
         if ($value === True) {
@@ -29,16 +31,25 @@ class PageController extends Controller
                 ->where('key', '=', $page_id)
                 ->first();
 
-            $message->created_at = Carbon::parse($message->created_at);
-            $message->messagecontent = Crypt::decryptString($message->messagecontent);
+            if (Carbon::parse($message->expires_at)->isPast()) {
+                DB::table('messages')
+                    ->where('key', '=', $page_id)
+                    ->delete();
 
-            // dd();
-            return view('message.index', [
-                'message' => $message,
-            ]);
+                $status = 'Date expired, message deleted!';
+            } else {
+                $message->created_at = Carbon::parse($message->created_at);
+                $message->messagecontent = Crypt::decryptString($message->messagecontent);
+
+                // dd();
+                return view('message.index', [
+                    'message' => $message,
+                ]);
+            }
         }
         return view('page.login', [
             'page_id' => $page_id,
+            'status' => $status
         ]);
     }
 
@@ -59,6 +70,12 @@ class PageController extends Controller
         // Verify code
         if ($page != null) {
             $request->session()->flash('signin', True);
+        } else // Login not correct
+        {
+            return view('page.login', [
+                'page_id' => $request->key,
+                'status' => 'Login not correct'
+            ]);
         }
 
         // redirect

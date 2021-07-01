@@ -18,7 +18,6 @@ class CreatePagesTable extends Migration
             $table->string('key');
             $table->foreign('key')->references('key')->on('messages')->onDelete('cascade');
             $table->string('password');
-            $table->timestamp('expires_at');
             $table->timestamps();
         });
     }

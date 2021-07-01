@@ -12,7 +12,7 @@ class Page extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'key', 'password', 'expires_at'
+        'key', 'password'
     ];
 
     /**
@@ -25,6 +25,6 @@ class Page extends Authenticatable
     ];
 
     protected $dates = [
-        'created_at', 'updated_at', 'expires_at'
+        'created_at', 'updated_at'
     ];
 }

@@ -18,6 +18,7 @@ class CreateMessagesTable extends Migration
             $table->string('key')->unique();
             $table->text('colleague_email')->nullable(true);
             $table->text('messagecontent');
+            $table->timestamp('expires_at');
             $table->timestamps();
         });
     }

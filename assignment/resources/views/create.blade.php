@@ -14,19 +14,20 @@
                     </div>
                 @endisset
 
-                
-                
+
+
 
                 <form action="{{ route('store') }}" method="post">
                     @csrf
                     <div class="mb-2">
                         <select name="colleague_email" class="form-control mb-2">
                             @if (count($colleague_emails))
-                    @foreach ($colleague_emails as $colleague_email)
-                        <p> {{$colleague_email['name']}}</p>
-                        <option value="{{ $colleague_email['email'] }}">{{ $colleague_email['name'] }}</option>
-                    @endforeach
-                @endif
+                                @foreach ($colleague_emails as $colleague_email)
+                                    <p> {{ $colleague_email['name'] }}</p>
+                                    <option value="{{ $colleague_email['email'] }}">{{ $colleague_email['name'] }}
+                                    </option>
+                                @endforeach
+                            @endif
                         </select>
                         @error('colleague_email')
                             <div class="text-danger mt-2 text-sm">
@@ -41,7 +42,16 @@
                                 {{ $message }}
                             </div>
                         @enderror
+                        <label class="mt-2" for="addMinutes">Verloopt over:</label>
+                        <input type="number" name="addMinutes" class="form-control" step="1"
+                            value="{{ old('addMinutes') }}" placeholder="Aantal minuten"></textarea>
+                        @error('addMinutes')
+                            <div class="text-red-500 mt-2 text-sm">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
+
                     <button type="submit" class="btn btn-primary">Versleutel bericht</button>
                 </form>
             </div>

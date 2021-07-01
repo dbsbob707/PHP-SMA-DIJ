@@ -11,6 +11,7 @@ use App\Message;
 use App\Page;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class MessageController extends Controller
@@ -28,7 +29,7 @@ class MessageController extends Controller
     public function create(): Renderable
     {
         $colleague_emails = Http::get('https://pastebin.com/raw/uDzdKzGG')->json();
-        
+
         // dd($colleague_emails[1]['name']);
         return view('create', [
             'colleague_emails' => $colleague_emails
@@ -56,18 +57,18 @@ class MessageController extends Controller
         Message::create([
             'key' => $key,
             'colleague_email' => $request->colleague_email,
-            'messagecontent' => Crypt::encryptString($request->messagecontent)
+            'messagecontent' => Crypt::encryptString($request->messagecontent),
+            'expires_at' => Carbon::now()->addMinutes($request->addMinutes),
         ]);
 
 
         Page::create([
             'key' => $key,
             'password' => $password,
-            'expires_at' => Carbon::now()->addHours(60),
         ]);
 
         $colleague_emails = Http::get('https://pastebin.com/raw/uDzdKzGG')->json();
-        
+
         // redirect
         return view('create', [
             'colleague_emails' => $colleague_emails,
@@ -142,6 +143,13 @@ class MessageController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('messages')
+            ->where('key', '=', $id)
+            ->delete();
+
+        return view('page.login', [
+            'page_id' => $id,
+            'status' => null
+        ]);
     }
 }

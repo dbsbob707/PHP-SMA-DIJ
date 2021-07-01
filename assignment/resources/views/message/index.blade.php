@@ -11,6 +11,15 @@
                 @endif
                 <p class="mb-2">{{ $message->messagecontent }}</p>
                 <small class="text-muted">{{ $message->created_at->diffForHumans() }}</small>
+
+                <form action="/destroy/{{ $message->key }}" method="POST">
+                    @csrf
+                    <div>
+                        <button type="submit" class="btn btn-primary">
+                            Delete
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
