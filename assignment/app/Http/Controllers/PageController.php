@@ -10,16 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
-    // get method
-    public function show($page_id)
-    {
-        return view('page.index', [
-            "url" => 'key',
-            "password" => 'password',
-            "expires_at" => 'morgen',
-        ]);
-    }
-
     public function index(Request $request, $page_id)
     {
         $status = null;
